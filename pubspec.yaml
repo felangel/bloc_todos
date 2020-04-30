@@ -1,0 +1,52 @@
+name: bloc_todos
+description: A new Flutter project.
+
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  meta: ^1.1.8
+  equatable: ^1.1.1
+  flutter_bloc: ^4.0.0
+  path_provider: ^0.4.1
+  todos_app_core:
+    git:
+      url: https://github.com/felangel/flutter_architecture_samples
+      path: todos_app_core
+  todos_repository_core:
+    git:
+      url: https://github.com/felangel/flutter_architecture_samples
+      path: todos_repository_core
+  todos_repository_simple:
+    git:
+      url: https://github.com/felangel/flutter_architecture_samples
+      path: todos_repository_simple
+
+dependency_overrides:
+  todos_app_core:
+    git:
+      url: https://github.com/felangel/flutter_architecture_samples
+      path: todos_app_core
+      ref: rxdart/0.23.0
+  todos_repository_core:
+    git:
+      url: https://github.com/felangel/flutter_architecture_samples
+      path: todos_repository_core
+      ref: rxdart/0.23.0
+  todos_repository_simple:
+    git:
+      url: https://github.com/felangel/flutter_architecture_samples
+      path: todos_repository_simple
+      ref: rxdart/0.23.0
+
+dev_dependencies:
+  effective_dart: ^1.2.0
+
+flutter:
+  uses-material-design: true

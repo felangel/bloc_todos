@@ -1,0 +1,13 @@
+include: package:effective_dart/analysis_options.yaml
+
+linter:
+  rules:
+    public_member_api_docs: false
+    prefer_relative_imports: false
+    prefer_const_literals_to_create_immutable: true
+    prefer_const_constructors: true
+    sort_constructors_first: true
+
+analyzer:
+  errors:
+    close_sinks: ignore
