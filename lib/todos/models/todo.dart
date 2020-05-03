@@ -1,7 +1,11 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:todos_app_core/todos_app_core.dart';
 import 'package:equatable/equatable.dart';
 import 'package:todos_repository_core/todos_repository_core.dart';
 
+part 'todo.g.dart';
+
+@JsonSerializable()
 class Todo extends Equatable {
   Todo(
     this.task, {
@@ -11,10 +15,14 @@ class Todo extends Equatable {
   })  : note = note ?? '',
         id = id ?? Uuid().generateV4();
 
+  factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
+
   final bool complete;
   final String id;
   final String note;
   final String task;
+
+  Map<String, dynamic> toJson() => _$TodoToJson(this);
 
   Todo copyWith({bool complete, String id, String note, String task}) {
     return Todo(

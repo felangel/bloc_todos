@@ -1,6 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-class TodosBlocDelegate extends BlocDelegate {
+class TodosBlocDelegate extends HydratedBlocDelegate {
+  TodosBlocDelegate(HydratedStorage storage) : super(storage);
+
   @override
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);

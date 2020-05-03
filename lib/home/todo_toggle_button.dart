@@ -14,7 +14,6 @@ class TodoToggleButton extends StatelessWidget {
     return BlocBuilder<TodosBloc, TodosState>(
       builder: (context, state) {
         if (state is TodosLoadSuccess && state.activeTodo != null) {
-          print('complete: ${state.activeTodo.complete}');
           return AnimatedOpacity(
             opacity: visible ? 1.0 : 0.0,
             duration: const Duration(milliseconds: 150),

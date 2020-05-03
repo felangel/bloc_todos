@@ -60,8 +60,8 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
   ) async* {
     if (state is TodosLoadSuccess) {
       final updatedTodos = List<Todo>.from(state.todos)..add(event.todo);
+      await _saveTodos(updatedTodos);
       yield TodosLoadSuccess(todos: updatedTodos);
-      _saveTodos(updatedTodos);
     }
   }
 
@@ -72,8 +72,8 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
     if (state is TodosLoadSuccess) {
       final updatedTodos =
           state.todos.where((todo) => todo.id != event.todo.id).toList();
+      await _saveTodos(updatedTodos);
       yield TodosLoadSuccess(todos: updatedTodos);
-      _saveTodos(updatedTodos);
     }
   }
 
@@ -87,11 +87,11 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
               ? todo.copyWith(task: event.task)
               : todo)
           .toList();
+      await _saveTodos(updatedTodos);
       yield state.copyWith(
         todos: updatedTodos,
         activeTodo: state.activeTodo.copyWith(task: event.task),
       );
-      _saveTodos(updatedTodos);
     }
   }
 
@@ -117,13 +117,13 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
               ? todo.copyWith(complete: !todo.complete)
               : todo)
           .toList();
+      await _saveTodos(updatedTodos);
       yield state.copyWith(
         todos: updatedTodos,
         activeTodo: state.activeTodo.copyWith(
           complete: !state.activeTodo.complete,
         ),
       );
-      _saveTodos(updatedTodos);
     }
   }
 
@@ -133,16 +133,16 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
       final updatedTodos = state.todos
           .map((todo) => todo.copyWith(complete: !allComplete))
           .toList();
+      await _saveTodos(updatedTodos);
       yield TodosLoadSuccess(todos: updatedTodos);
-      _saveTodos(updatedTodos);
     }
   }
 
   Stream<TodosState> _mapClearCompletedToState(TodosState state) async* {
     if (state is TodosLoadSuccess) {
       final updatedTodos = state.todos.where((todo) => !todo.complete).toList();
+      await _saveTodos(updatedTodos);
       yield TodosLoadSuccess(todos: updatedTodos);
-      _saveTodos(updatedTodos);
     }
   }
 

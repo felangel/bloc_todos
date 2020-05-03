@@ -14,25 +14,26 @@ class FilteredTodosList extends StatelessWidget {
           itemCount: state.filteredTodos.length,
           itemBuilder: (context, index) {
             final todo = state.filteredTodos[index];
-            return TodoItem(
-              todo: todo,
-              onChanged: (task) {
-                context.bloc<TodosBloc>().add(TaskUpdated(task));
-              },
-              onPressed: () {
-                context.bloc<TodosBloc>().add(TodoSelected(todo));
-              },
-              onDismissed: (_) {
-                context.bloc<TodosBloc>().add(TodoDeleted(todo));
-                Scaffold.of(context).showSnackBar(
-                  _DeleteTodoSnackBar(
-                    todo: todo,
-                    onUndo: () {
-                      context.bloc<TodosBloc>().add(TodoAdded(todo));
-                    },
-                  ),
-                );
-              },
+            return BlocProvider(
+              create: (context) => TodoBloc(
+                todo: todo,
+                todosBloc: context.bloc<TodosBloc>(),
+              ),
+              child: TodoItem(
+                key: Key('__todo_item_${todo.id}__'),
+                todo: todo,
+                onDismissed: (_) {
+                  context.bloc<TodosBloc>().add(TodoDeleted(todo));
+                  Scaffold.of(context).showSnackBar(
+                    _DeleteTodoSnackBar(
+                      todo: todo,
+                      onUndo: () {
+                        context.bloc<TodosBloc>().add(TodoAdded(todo));
+                      },
+                    ),
+                  );
+                },
+              ),
             );
           },
         );

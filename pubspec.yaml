@@ -13,7 +13,9 @@ dependencies:
     sdk: flutter
   meta: ^1.1.8
   equatable: ^1.1.1
-  flutter_bloc: ^4.0.0
+  flutter_bloc: ^3.0.0
+  hydrated_bloc: ^3.1.0
+  json_annotation: ^3.0.1
   path_provider: ^0.4.1
   todos_app_core:
     git:
@@ -29,6 +31,7 @@ dependencies:
       path: todos_repository_simple
 
 dependency_overrides:
+  path_provider: ^1.6.5
   todos_app_core:
     git:
       url: https://github.com/felangel/flutter_architecture_samples
@@ -46,7 +49,9 @@ dependency_overrides:
       ref: rxdart/0.23.0
 
 dev_dependencies:
+  build_runner: ^1.9.0
   effective_dart: ^1.2.0
+  json_serializable: ^3.3.0
 
 flutter:
   uses-material-design: true
