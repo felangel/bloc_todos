@@ -29,8 +29,8 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
       yield* _mapTodoAddedToState(event, state);
     } else if (event is TodoDeleted) {
       yield* _mapTodoDeletedToState(event, state);
-    } else if (event is TaskUpdated) {
-      yield* _mapTaskUpdatedToState(event, state);
+    } else if (event is TodoSavedUpstream) {
+      yield* _mapTodoSavedUpstreamToState(event, state);
     } else if (event is TodoSelected) {
       yield* _mapTodoSelectedToState(event, state);
     } else if (event is TodoToggled) {
@@ -77,20 +77,18 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
     }
   }
 
-  Stream<TodosState> _mapTaskUpdatedToState(
-    TaskUpdated event,
+  Stream<TodosState> _mapTodoSavedUpstreamToState(
+    TodoSavedUpstream event,
     TodosState state,
   ) async* {
-    if (state is TodosLoadSuccess && state.activeTodo != null) {
+    if (state is TodosLoadSuccess) {
       final updatedTodos = state.todos
-          .map((todo) => todo.id == state.activeTodo.id
-              ? todo.copyWith(task: event.task)
-              : todo)
+          .map((todo) => todo.id == event.todo.id ? event.todo : todo)
           .toList();
       await _saveTodos(updatedTodos);
       yield state.copyWith(
         todos: updatedTodos,
-        activeTodo: state.activeTodo.copyWith(task: event.task),
+        activeTodo: event.todo,
       );
     }
   }

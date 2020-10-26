@@ -8,14 +8,18 @@ part of 'todo_bloc.dart';
 
 TodoState _$TodoStateFromJson(Map<String, dynamic> json) {
   return TodoState(
+    json['remoteTodo'] == null
+        ? null
+        : Todo.fromJson(json['remoteTodo'] as Map<String, dynamic>),
     json['todo'] == null
         ? null
         : Todo.fromJson(json['todo'] as Map<String, dynamic>),
-    dirty: json['dirty'] as bool,
+    invalidated: json['invalidated'] as bool,
   );
 }
 
 Map<String, dynamic> _$TodoStateToJson(TodoState instance) => <String, dynamic>{
+      'remoteTodo': instance.remoteTodo?.toJson(),
       'todo': instance.todo?.toJson(),
-      'dirty': instance.dirty,
+      'invalidated': instance.invalidated,
     };

@@ -22,6 +22,12 @@ class TodoItem extends StatelessWidget {
           key: Key(state.todo.id),
           onDismissed: onDismissed,
           child: ListTile(
+            leading: Checkbox(
+              value: state.todo.complete,
+              onChanged: (complete) {
+                context.bloc<TodoBloc>().add(TodoCompleteChanged(complete));
+              },
+            ),
             title: TextFormField(
               initialValue: state.todo.task,
               onChanged: (task) {

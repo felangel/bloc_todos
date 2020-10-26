@@ -41,13 +41,13 @@ class TodoSelected extends TodosEvent {
   List<Object> get props => [todo];
 }
 
-class TaskUpdated extends TodosEvent {
-  const TaskUpdated(this.task);
+class TodoSavedUpstream extends TodosEvent {
+  const TodoSavedUpstream(this.todo);
 
-  final String task;
+  final Todo todo;
 
   @override
-  List<Object> get props => [task];
+  List<Object> get props => [todo];
 }
 
 class TodoToggled extends TodosEvent {

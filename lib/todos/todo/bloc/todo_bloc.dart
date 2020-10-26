@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc_todos/todos/todos.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
@@ -40,8 +41,15 @@ class TodoBloc extends HydratedBloc<TodoEvent, TodoState> {
   TodoState get initialState {
     final cachedState = super.initialState;
     return cachedState != null
-        ? TodoState(_merge(_todo, cachedState.todo, cachedState.invalidated))
-        : TodoState(_todo);
+        ? TodoState(
+            _todo,
+            _merge(
+              _todo,
+              cachedState.todo,
+              cachedState.invalidated,
+            ),
+          )
+        : TodoState(_todo, _todo);
   }
 
   @override
@@ -50,14 +58,14 @@ class TodoBloc extends HydratedBloc<TodoEvent, TodoState> {
   ) async* {
     if (event is TodoTaskChanged) {
       yield _mapTodoTaskChangedToState(event, state);
+    } else if (event is TodoCompleteChanged) {
+      yield _mapTodoCompleteChangedToState(event, state);
     } else if (event is TodoSaved) {
-      _todosBloc.add(TaskUpdated(state.todo.task));
-      yield TodoState(state.todo, invalidated: true);
+      _todosBloc.add(TodoSavedUpstream(state.todo));
+      yield TodoState(state.todo, state.todo, invalidated: true);
     } else if (event is TodoUpdated) {
-      yield TodoState(
-        _merge(event.todo, state.todo, state.invalidated),
-        dirty: event.todo.task != state.todo.task,
-      );
+      final updatedTodo = _merge(event.todo, state.todo, state.invalidated);
+      yield TodoState(updatedTodo, updatedTodo);
     }
   }
 
@@ -68,10 +76,14 @@ class TodoBloc extends HydratedBloc<TodoEvent, TodoState> {
   }
 
   TodoState _mapTodoTaskChangedToState(TodoTaskChanged event, TodoState state) {
-    return TodoState(
-      state.todo.copyWith(task: event.task),
-      dirty: event.task != _todo.task,
-    );
+    final newTodo = state.todo.copyWith(task: event.task);
+    return TodoState(state.remoteTodo, newTodo);
+  }
+
+  TodoState _mapTodoCompleteChangedToState(
+      TodoCompleteChanged event, TodoState state) {
+    final newTodo = state.todo.copyWith(complete: event.complete);
+    return TodoState(state.remoteTodo, newTodo);
   }
 
   Todo _merge(Todo remote, Todo local, bool invalidated) {

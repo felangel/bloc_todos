@@ -13,8 +13,8 @@ dependencies:
     sdk: flutter
   meta: ^1.1.8
   equatable: ^1.1.1
-  flutter_bloc: ^3.0.0
-  hydrated_bloc: ^3.1.0
+  flutter_bloc: ^4.0.0
+  hydrated_bloc: ^4.0.0
   json_annotation: ^3.0.1
   path_provider: ^0.4.1
   todos_app_core:

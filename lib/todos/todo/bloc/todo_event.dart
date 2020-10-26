@@ -19,6 +19,15 @@ class TodoTaskChanged extends TodoEvent {
   List<Object> get props => [task];
 }
 
+class TodoCompleteChanged extends TodoEvent {
+  const TodoCompleteChanged(this.complete);
+
+  final bool complete;
+
+  @override
+  List<Object> get props => [complete];
+}
+
 class TodoSaved extends TodoEvent {}
 
 class TodoUpdated extends TodoEvent {
